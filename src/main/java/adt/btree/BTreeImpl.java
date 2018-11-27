@@ -108,14 +108,33 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 
 	@Override
 	public void insert(T element) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
-
+		if (element != null) {
+			insert(root, element);
+		}
 	}
-
+	
+	private void insert(BNode<T> node, T element) {
+		if (node.isLeaf()) {
+			if (node.isFull()) {
+				
+			} else {
+				node.addElement(element);
+			}
+		} else {
+			int i = 0;
+			
+			while (i < node.size() && node.getElementAt(i).compareTo(element) < 0) {
+				i++;
+			}
+			
+			insert(node.getChildren().get(i), element);
+		}
+	}
+	
 	private void split(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		T mediana = node.getElementAt(node.getOrder() / 2);
+		
+		
 	}
 
 	private void promote(BNode<T> node) {
