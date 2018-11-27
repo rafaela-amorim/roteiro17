@@ -72,14 +72,137 @@ public class BNode<T extends Comparable<T>> {
 		return this.elements.get(index);
 	}
 	
-	protected void split(){
-		//TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+	private void guardaElementos(T mediana, BNode<T> maior, BNode<T> menor) {
+
+		int index = 0;
+
+		while (index < getElements().size()) {
+
+			if (mediana.compareTo(getElementAt(index)) < 0) {
+				maior.addElement(getElementAt(index));
+			}
+
+			if (mediana.compareTo(getElementAt(index)) > 0) {
+				menor.addElement(getElementAt(index));
+			}
+
+			index++;
+		}
 	}
-	
-	protected void promote(){
-		//TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+
+	private void reorganizador(LinkedList<BNode<T>> filhos, BNode<T> node, int first, int last) {
+
+		int pos;
+		int index = first;
+
+		while (index < last) {
+			pos = position(node.getElements(), filhos.get(index).getElements().get(0));
+			node.addChild(pos, filhos.get(index));
+
+			index++;
+		}
+	}
+
+	private int position(LinkedList<T> lista, T mediana) {
+
+		int i = 0;
+		while (i < lista.size()) {
+
+			if (lista.get(i).compareTo(mediana) > 0) {
+				return i;
+			}
+
+			i++;
+		}
+
+		return lista.size();
+	}
+
+	protected void split() {
+
+		T mediana = getElements().get(getElements().size() / 2);
+
+		int pos, left, right;
+
+		BNode<T> maior = new BNode<T>(getMaxChildren());
+		BNode<T> menor = new BNode<T>(getMaxChildren());
+
+		LinkedList<BNode<T>> filhos = new LinkedList<BNode<T>>();
+
+		guardaElementos(mediana, maior, menor);
+
+		if (getParent() == null && !isLeaf()) {
+
+			filhos = getChildren();
+
+			setElements(new LinkedList<T>());
+			addElement(mediana);
+			setChildren(new LinkedList<BNode<T>>());
+
+			addChild(0, menor);
+			addChild(1, maior);
+
+			reorganizador(filhos, menor, 0, menor.size() + 1);
+			reorganizador(filhos, maior, maior.size() + 1, filhos.size());
+
+		} else if (getParent() == null && isLeaf()) {
+
+			setElements(new LinkedList<T>());
+			addElement(mediana);
+			addChild(0, menor);
+			addChild(1, maior);
+
+		} else if (isLeaf()) {
+
+			BNode<T> node = new BNode<>(getMaxChildren());
+
+			node.getElements().add(mediana);
+			node.parent = getParent();
+
+			menor.parent = getParent();
+			maior.parent = getParent();
+
+			pos = position(node.getParent().getElements(), mediana);
+			left = pos;
+			right = pos + 1;
+
+			getParent().getChildren().set(left, menor);
+			getParent().getChildren().add(right, maior);
+
+			node.promote();
+
+		} else {
+
+			filhos = getChildren();
+
+			BNode<T> node = new BNode<>(getMaxChildren());
+
+			node.getElements().add(mediana);
+			node.parent = getParent();
+
+			menor.parent = getParent();
+			maior.parent = getParent();
+
+			pos = position(node.getElements(), mediana);
+			left = pos;
+			right = pos + 1;
+
+			getParent().getChildren().add(left, menor);
+			getParent().getChildren().add(right, maior);
+
+		}
+	}
+
+	protected void promote() {
+
+		int pos = position(getParent().getElements(), getElementAt(0));
+
+		getParent().getElements().add(pos, getElementAt(0));
+
+		if (getParent().size() > getMaxKeys()) {
+			getParent().split();
+		}
+
 	}
 	
 	public LinkedList<T> getElements() {
