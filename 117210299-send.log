@@ -17,3 +17,13 @@
   <level>FINE</level>
   <message>File 117210299-RAFAELA DE AMORIM BARBOSA SILVA.zip was received. It was sent by RAFAELA DE AMORIM BARBOSA SILVA from IP 192.168.1.11</message>
 </record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-11-28T14:54:14.194-0300</date>
+  <logger>RAFAELA DE AMORIM BARBOSA SILVA</logger>
+  <level>FINE</level>
+  <message>File 117210299-RAFAELA DE AMORIM BARBOSA SILVA.zip was received. It was sent by RAFAELA DE AMORIM BARBOSA SILVA from IP 192.168.1.11</message>
+</record>

@@ -136,6 +136,7 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 
 	private void promote(BNode<T> node) {
 		node.promote();
+		// useless here, i suppose
 	}
 
 	// NAO PRECISA IMPLEMENTAR OS METODOS ABAIXO
